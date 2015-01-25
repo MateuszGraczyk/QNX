@@ -1,0 +1,38 @@
+/* macierzysty.c */
+#include <stdio.h>
+#include <process.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+int main()
+{
+	int pid, i, res, res2, status;
+
+	// tworzenie procesu potomnego z programu p461_potomny
+	res = spawnl(P_NOWAIT,"p471_pot","p471_pot","1","4",NULL);
+	res2 = spawnl(P_NOWAIT,"p471_pot","p471_pot","2","2",NULL);
+
+
+	if (res<0)
+	{
+		printf("blad wywolania procesu 'potomny' 1\n");
+		exit(0);
+	}
+	if (res2<0)
+	{
+		printf("blad wywolania procesu 'potomny' 2\n");
+		exit(0);
+	}
+
+	for(i=1;i<=6;i++)
+	{
+		sleep(1);
+	}
+
+	pid = wait(&status);
+	printf("M: Proces %d zakonczony, status %d\n", pid, status);
+	return 0;
+}
